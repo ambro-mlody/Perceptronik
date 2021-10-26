@@ -3,7 +3,7 @@ import sys
 import pygame as py
 import button
 import data
-
+import perceptron
 
 py.init()
 size = (390, 550)
@@ -68,10 +68,30 @@ def clean_clicked(self):
 
 
 menu.append(button.Button(position, button_size, "clean", font, color="black", bg_color="gray", on_click=clean_clicked))
+
+
+def check_clicked(self):
+    x = []
+    for pixel in canvas:
+        x.append(pixel.clicked)
+
+    for i in range(10):
+        if perceptrons[i].output(x) == 1:
+            output_screen.text = str(i)
+            break
+
+
 position = (position[0], position[1] - diff)
-menu.append(button.Button(position, button_size, "check", font, color="black", bg_color="gray"))
+menu.append(button.Button(position, button_size, "check", font, color="black", bg_color="gray", on_click=check_clicked))
 position = (position[0] - diff_x, position[1])
-menu.append(button.Button(position, button_size, "learn", font, color="black", bg_color="gray"))
+
+
+def learn_clicked(self):
+    for perceptron in perceptrons:
+        perceptron.train(data.data, data.labels)
+
+
+menu.append(button.Button(position, button_size, "learn", font, color="black", bg_color="gray", on_click=learn_clicked))
 
 position = (position[0] + 2 * diff_x, position[1])
 button_size = (size[0] - position[0] - x, size[1] - position[1] - x)
@@ -98,6 +118,10 @@ for i in range(1, 36):
     position = (position[0] + diff, position[1])
     if i % 5 == 0:
         position = (x, position[1] + diff)
+
+perceptrons = []
+for i in range(10):
+    perceptrons.append(perceptron.Perceptron(35))
 
 while True:
     window.fill((0, 0, 0))
