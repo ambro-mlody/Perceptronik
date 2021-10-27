@@ -77,7 +77,8 @@ def check_clicked(self):
 
     for i in range(10):
         if perceptrons[i].output(x) == 1:
-            output_screen.text = str(i)
+            print(i)
+            output_screen.change_text(str(i))
             break
 
 
@@ -87,8 +88,10 @@ position = (position[0] - diff_x, position[1])
 
 
 def learn_clicked(self):
-    for perceptron in perceptrons:
-        perceptron.train(data.data, data.labels)
+    for i in range(10):
+        perceptrons[i].train(data.data, data.labels[i])
+
+    print("done")
 
 
 menu.append(button.Button(position, button_size, "learn", font, color="black", bg_color="gray", on_click=learn_clicked))

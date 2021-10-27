@@ -16,15 +16,17 @@ class Perceptron(object):
             t = 0
             _t = t
             _w = self.weights
-            for input, label in random.choices(zip(training_data, labels), k=len(training_data)):
+            for input, label in zip(training_data, labels):
                 prediction = self.output(input)
+                input = np.array(input)
                 if label == prediction:
                     t += 1
                 else:
                     if t > _t:
                         _t = t
                         _w = self.weights
-                    t = 0
+                        t = 0
+
                     self.weights[1:] += self.learning_rate * (label - prediction) * input
                     self.weights[0] += self.learning_rate * (label - prediction)
 
@@ -35,5 +37,3 @@ class Perceptron(object):
         else:
             return 0
 
-    def error(self):  # Zad. 5. Napisac funkcj Error
-        pass
